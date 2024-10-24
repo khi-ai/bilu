@@ -1,6 +1,7 @@
 import { Hono } from "hono/tiny";
 
 import comments, { COMMENT } from "./libs/comments";
+import { demo, embed } from "./libs/embed";
 
 type Bindings = {
   KV: KVNamespace;
@@ -30,6 +31,15 @@ app.post("/comments", async (c) => {
   });
 
   return c.json({ user, comment, timestamp: Date.now() });
+});
+
+app.get("/embed.js", (c) => {
+  c.header("Content-Type", "application/javascript");
+  return c.render(embed);
+});
+
+app.get("/demo", (c) => {
+  return c.html(demo);
 });
 
 export default app;
