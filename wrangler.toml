@@ -6,18 +6,18 @@ compatibility_flags = [ "nodejs_compat" ]
 # [vars]
 # MY_VAR = "my-variable"
 
-# [[kv_namespaces]]
-# binding = "MY_KV_NAMESPACE"
-# id = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+[[kv_namespaces]]
+binding = "KV"
+id = "54d489544aa14336bae3f3f551f122ea"
 
 # [[r2_buckets]]
 # binding = "MY_BUCKET"
 # bucket_name = "my-bucket"
 
-[[d1_databases]]
-binding = "DB" # i.e. available in your Worker on env.DB
-database_name = "bilu"
-database_id = "05eb0c8f-ebeb-4030-9136-43d22d5be18d"
+# [[d1_databases]]
+# binding = "DB" # i.e. available in your Worker on env.DB
+# atabase_name = "bilu"
+# database_id = "05eb0c8f-ebeb-4030-9136-43d22d5be18d"
 
 # [ai]
 # binding = "AI"
