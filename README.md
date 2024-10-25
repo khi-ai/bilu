@@ -17,16 +17,16 @@ You can view a working demo of the comment system here: [Bilu Comment System Dem
 
 1. **JavaScript Embedding**: You can embed the comment system by adding a `<script>` tag and a `<div>` for displaying comments. Example:
 
-    ```html
-    <div id="bilu-comment-section"></div>
-    <script src="https://bilu.khi-me.workers.dev/embed.js"></script>
-    <script>
-      bilu.init({
-        api: 'https://bilu.khi-me.workers.dev', // API endpoint for comment handling
-        url: window.location.pathname, // The page URL to associate comments with
-      });
-    </script>
-    ```
+   ```html
+   <div id="bilu-comment-section"></div>
+   <script src="https://bilu.khi-me.workers.dev/embed.js"></script>
+   <script>
+     bilu.init({
+       api: "https://bilu.khi-me.workers.dev", // API endpoint for comment handling
+       url: window.location.pathname, // The page URL to associate comments with
+     });
+   </script>
+   ```
 
 2. **API Endpoints**:
    - `GET /comments?url=<page_url>`: Retrieves all comments associated with the given URL.
@@ -37,32 +37,36 @@ You can view a working demo of the comment system here: [Bilu Comment System Dem
 To deploy and run this comment system yourself:
 
 1. **Clone the repository**:
-    ```bash
-    git clone https://github.com/your-repo/bilu-comment-system.git
-    cd bilu-comment-system
-    ```
+
+   ```bash
+   git clone https://github.com/your-repo/bilu-comment-system.git
+   cd bilu-comment-system
+   ```
 
 2. **Install dependencies**:
-    ```bash
-    npm install
-    ```
+
+   ```bash
+   npm install
+   ```
 
 3. **Configure Cloudflare Workers**:
-    - Ensure you have a Cloudflare account and Workers enabled.
-    - Set up a Cloudflare D1 or KV namespace for comment storage.
-    - Update your `wrangler.toml` file to include your D1 or KV binding.
+
+   - Ensure you have a Cloudflare account and Workers enabled.
+   - Set up a Cloudflare D1 or KV namespace for comment storage.
+   - Update your `wrangler.toml` file to include your D1 or KV binding.
 
 4. **Deploy to Cloudflare**:
-    ```bash
-    npx wrangler publish
-    ```
+
+   ```bash
+   npx wrangler publish
+   ```
 
 5. **Test the API**:
-    You can test the API directly by sending requests using tools like `curl` or Postman:
-    
-    ```bash
-    curl https://your-worker-url/comments?url=/your-page-url
-    ```
+   You can test the API directly by sending requests using tools like `curl` or Postman:
+
+   ```bash
+   curl https://your-worker-url/comments?url=/your-page-url
+   ```
 
 ## Example Code
 
@@ -71,28 +75,31 @@ To deploy and run this comment system yourself:
 The following script is used to embed the comment section into any webpage:
 
 ```javascript
-(function() {
+(function () {
   const bilu = {
-    init: function(config) {
-      const commentDiv = document.getElementById('bilu-comment-section');
+    init: function (config) {
+      const commentDiv = document.getElementById("bilu-comment-section");
       if (!commentDiv) {
         console.error("Div with id 'bilu-comment-section' not found!");
         return;
       }
 
-      const loadComments = function() {
+      const loadComments = function () {
         fetch(config.api + "/comments?url=" + encodeURIComponent(config.url))
-          .then(response => response.json())
-          .then(data => {
-            const commentsHtml = data.map(comment =>
-              `<p><strong>${comment.user}</strong>: ${comment.comment} (${new Date(comment.timestamp).toLocaleString()})</p>`
-            ).join('');
-            commentDiv.querySelector('.comments-list').innerHTML = commentsHtml;
+          .then((response) => response.json())
+          .then((data) => {
+            const commentsHtml = data
+              .map(
+                (comment) =>
+                  `<p><strong>${comment.user}</strong>: ${comment.comment} (${new Date(comment.timestamp).toLocaleString()})</p>`,
+              )
+              .join("");
+            commentDiv.querySelector(".comments-list").innerHTML = commentsHtml;
           });
       };
 
-      if (!commentDiv.querySelector('form')) {
-        const form = document.createElement('form');
+      if (!commentDiv.querySelector("form")) {
+        const form = document.createElement("form");
         form.innerHTML = `
           <input type="text" id="name" placeholder="Your Name" required />
           <textarea id="content" placeholder="Your Comment" required></textarea>
@@ -100,16 +107,19 @@ The following script is used to embed the comment section into any webpage:
           <div class="comments-list"></div>
         `;
 
-        form.addEventListener('submit', function(e) {
+        form.addEventListener("submit", function (e) {
           e.preventDefault();
-          const name = form.querySelector('#name').value;
-          const content = form.querySelector('#content').value;
+          const name = form.querySelector("#name").value;
+          const content = form.querySelector("#content").value;
 
-          fetch(config.api + "/comments?url=" + encodeURIComponent(config.url), {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ user: name, comment: content })
-          }).then(() => {
+          fetch(
+            config.api + "/comments?url=" + encodeURIComponent(config.url),
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ user: name, comment: content }),
+            },
+          ).then(() => {
             loadComments();
           });
         });
@@ -118,7 +128,7 @@ The following script is used to embed the comment section into any webpage:
       }
 
       loadComments();
-    }
+    },
   };
 
   window.bilu = bilu;
@@ -176,6 +186,7 @@ You can check out a live demo of the comment system here: [Bilu Comment System D
 
 ```
 
---- 
+---
 
 This `README.md` provides a comprehensive guide to set up, integrate, and deploy the Bilu Comment System, as well as a live demo link for easy testing.
+```
