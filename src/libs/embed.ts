@@ -8,7 +8,6 @@ export const embed = `
         return;
       }
 
-      // Spinner HTML
       const loaderHtml = \`
         <div class="loader-spinner flex justify-center items-center">
           <div class="animate-spin rounded-full h-6 w-6 border-t-2 border-b-2 border-gray-500"></div>
@@ -25,13 +24,15 @@ export const embed = `
       };
 
       const loadComments = function() {
-        showLoader(); // Show loader before comments load
-        fetch(config.api + "/comments?url=" + encodeURIComponent(config.url))
+        showLoader();
+        const timestamp = new Date().getTime();
+        
+        fetch(config.api + "/comments?url=" + encodeURIComponent(config.url) + "&t=" + timestamp)
           .then(response => response.json())
           .then(data => {
-            hideLoader(); // Remove loader when comments are ready
+            hideLoader();
             const commentsHtml = data.map(comment => 
-              \`<div class="p-2 border-b font-inconsolata">
+              \`<div class="p-2 border-b font-inconsolata text-sm">
                  <p id=\${comment.id}><strong class="text-gray-800">\${comment.user}</strong></p>
                  <p class="text-sm text-gray-600">\${comment.comment}</p>
                  <span class="text-xs text-gray-500">\${new Date(comment.timestamp).toLocaleString()}</span>
@@ -41,7 +42,19 @@ export const embed = `
           });
       };
 
-      // Check if form exists, if not, create a new one
+      const showToast = function(message) {
+        const toast = document.createElement('div');
+        toast.className = 'fixed bottom-4 left-1/2 transform -translate-x-1/2 bg-green-500 text-white rounded-lg py-2 px-4 shadow-lg transition-opacity duration-300 opacity-100 text-sm font-inconsolata';
+        toast.innerText = message;
+        document.body.appendChild(toast);
+  
+        setTimeout(() => {
+          toast.classList.remove('opacity-100');
+          toast.classList.add('opacity-0');
+          toast.addEventListener('transitionend', () => toast.remove());
+        }, 3000);
+      };
+
       if (!commentDiv.querySelector('form')) {
         const formContainer = document.createElement('div');
         formContainer.classList.add('flex', 'mx-auto', 'items-center', 'justify-center', 'shadow-lg', 'mt-20', 'mx-8', 'mb-4', 'max-w-lg');
@@ -50,7 +63,7 @@ export const embed = `
         form.classList.add('w-full', 'max-w-md', 'rounded-lg', 'px-2', 'pt-2');
         
         form.innerHTML = \`
-          <div class="flex flex-wrap -mx-2 mb-4" style="font-family: 'Inconsolata', monospace;">
+          <div class="flex flex-wrap -mx-2 mb-4 font-inconsolata">
             <h2 class="px-2 pt-2 pb-1 text-gray-800 text-sm">Add a new comment</h2>
             <div class="w-full md:w-full px-2 mb-2 mt-2">
               <input type="text" class="h-7 text-sm bg-transparent rounded border border-gray-400 leading-normal w-full py-1 px-2 font-medium placeholder-gray-700 focus:outline-none" id="name" placeholder="Your Name" required />
@@ -63,7 +76,6 @@ export const embed = `
                 <svg fill="none" class="w-4 h-4 text-gray-600 mr-1" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
                 </svg>
-                <p class="text-xs md:text-sm pt-px">Some HTML is okay.</p>
               </div>
               <div class="-mr-1">
                 <input type='submit' class="bg-transparent cursor-pointer text-gray-700 font-medium py-1 px-3 border border-gray-400 rounded-lg tracking-wide mr-1 hover:bg-gray-100 text-xs" value='Post Comment'>
@@ -78,13 +90,13 @@ export const embed = `
           const name = form.querySelector('#name').value;
           const content = form.querySelector('#content').value;
 
-          // Send new comment to API
           fetch(config.api + "/comments?url=" + encodeURIComponent(config.url), {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ user: name, comment: content })
           }).then(() => {
-            loadComments(); // Reload comments after submitting without clearing form
+            showToast('Your comment is under review and will be displayed shortly.');
+            loadComments();
           });
         });
 
@@ -92,7 +104,6 @@ export const embed = `
         commentDiv.appendChild(formContainer);
       }
 
-      // Load comments on page load
       loadComments();
     }
   };

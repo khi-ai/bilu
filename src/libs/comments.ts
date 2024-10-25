@@ -19,7 +19,7 @@ const getCommentFromIds = async (
   keys: { name: string }[],
 ): Promise<COMMENT[]> => {
   const comments: COMMENT[] = [];
-  
+
   // Fetch all comments from KV using the provided keys
   for (const { name } of keys) {
     const comment: COMMENT | null = await KV.get(name, "json");
@@ -27,10 +27,11 @@ const getCommentFromIds = async (
       comments.push(comment);
     }
   }
-  
-  return comments.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
-};
 
+  return comments.sort(
+    (a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime(),
+  );
+};
 
 const getAllComments = async (KV: KVNamespace): Promise<COMMENT[]> => {
   const { keys } = await KV.list({ prefix: COMMENT_PREFIX });

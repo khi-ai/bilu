@@ -38,7 +38,7 @@ app.get("/embed.js", (c) => {
   return c.render(embed);
 });
 
-app.get("/demo", (c) => {
+app.get("/", (c) => {
   return c.html(demo);
 });
 
