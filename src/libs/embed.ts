@@ -120,12 +120,8 @@ export const demo = `
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Comment System Demo</title>
   <link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@400;700&display=swap" rel="stylesheet">
-  <style>
-    .font-inconsolata {
-      font-family: 'Inconsolata', monospace;
-    }
-  </style>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <style>.font-inconsolata {font-family: 'Inconsolata', monospace;}</style>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/khi-ai/bilu/styles.css">
 </head>
 <body>
   <h1 class="text-xl font-inconsolata text-center mt-6">Bilu Comment System</h1>
