@@ -131,3 +131,4 @@ dist
 
 # Cloudflare Workers
 .wrangler
+wrangler.toml

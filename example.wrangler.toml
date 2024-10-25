@@ -8,7 +8,7 @@ compatibility_flags = [ "nodejs_compat" ]
 
 [[kv_namespaces]]
 binding = "KV"
-id = "54d489544aa14336bae3f3f551f122ea"
+id = ""
 
 # [[r2_buckets]]
 # binding = "MY_BUCKET"
