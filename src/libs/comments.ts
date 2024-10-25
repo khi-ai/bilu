@@ -5,7 +5,7 @@ export interface COMMENT {
   id?: number;
   user: string;
   comment: string;
-  timestamp?: number;
+  timestamp: number;
 }
 
 export const hash = (data: string, secret: number = 23): string => {
@@ -19,14 +19,18 @@ const getCommentFromIds = async (
   keys: { name: string }[],
 ): Promise<COMMENT[]> => {
   const comments: COMMENT[] = [];
+  
+  // Fetch all comments from KV using the provided keys
   for (const { name } of keys) {
     const comment: COMMENT | null = await KV.get(name, "json");
     if (comment) {
       comments.push(comment);
     }
   }
-  return comments;
+  
+  return comments.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
 };
+
 
 const getAllComments = async (KV: KVNamespace): Promise<COMMENT[]> => {
   const { keys } = await KV.list({ prefix: COMMENT_PREFIX });
